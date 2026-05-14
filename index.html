@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AA Viewer (Font Persistent)</title>
+    <style>
+        :root { --bg: #f5f5f5; --card: #ffffff; }
+        body { font-family: system-ui; background: var(--bg); padding: 15px; margin: 0; }
+        .controls { background: var(--card); padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h3 { margin-top: 0; color: #333; font-size: 1rem; }
+        input[type="file"] { width: 100%; margin: 10px 0; }
+        
+        /* AA 顯示區域的關鍵設定 */
+        #viewer { 
+            background: white; 
+            padding: 10px; 
+            border: 1px solid #ddd; 
+            overflow-x: auto; 
+            white-space: pre !important; /* 保留 AA 空格 */
+            line-height: 1.1;            /* AA 字符通常需要較緊密的行高 */
+        }
+        
+        /* 動態寫入字體的樣式容器 */
+        #dynamic-style {}
+        
+        .status { font-size: 0.8rem; color: #666; margin-top: 5px; }
+        .hidden { display: none; }
+    </style>
+    <style id="aa-font-style"></style>
+</head>
+<body>
+
+    <div class="controls">
+        <h3>1. 設定 AA 字體 (只需設定一次)</h3>
+        <input type="file" id="fontInput" accept=".ttf">
+        <div id="fontStatus" class="status">尚未載入自定義字體</div>
+    </div>
+
+    <div class="controls">
+        <h3>2. 選擇 AA 網頁檔案</h3>
+        <input type="file" id="htmlInput" accept=".html,.mht,.txt">
+    </div>
+
+    <div id="viewer" class="hidden">
+        </div>
+
+    <script>
+        const fontInput = document.getElementById('fontInput');
+        const htmlInput = document.getElementById('htmlInput');
+        const fontStatus = document.getElementById('fontStatus');
+        const aaStyle = document.getElementById('aa-font-style');
+        const viewer = document.getElementById('viewer');
+
+        // 初始化：檢查 LocalStorage 是否有存過的字體
+        const savedFont = localStorage.getItem('aa-font-b64');
+        if (savedFont) {
+            applyFont(savedFont);
+            fontStatus.innerText = "✅ 已從記憶中載入字體";
+        }
+
+        // 處理字體上傳
+        fontInput.onchange = (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const b64 = event.target.result;
+                localStorage.setItem('aa-font-b64', b64);
+                applyFont(b64);
+                fontStatus.innerText = "✅ 字體儲存成功！";
+            };
+            reader.readAsDataURL(file);
+        };
+
+        function applyFont(b64) {
+            aaStyle.innerHTML = `
+                @font-face {
+                    font-family: 'AAFont';
+                    src: url('${b64}') format('truetype');
+                }
+                #viewer, #viewer * { 
+                    font-family: 'AAFont', 'MS PGothic', sans-serif !important; 
+                }
+            `;
+        }
+
+        // 處理 HTML 檔案上傳
+        htmlInput.onchange = (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                let content = event.target.result;
+                
+                // 嘗試取出 body 內容，避免整頁 HTML 標籤衝突
+                const bodyMatch = content.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+                if (bodyMatch) {
+                    content = bodyMatch[1];
+                }
+
+                viewer.innerHTML = content;
+                viewer.classList.remove('hidden');
+                window.scrollTo(0, viewer.offsetTop);
+            };
+            // 針對 AA 常用編碼建議用 UTF-8
+            reader.readAsText(file, 'UTF-8');
+        };
+    </script>
+</body>
+</html>
