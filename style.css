@@ -1,6 +1,6 @@
 /* style.css */
 @font-face {
-    font-family: 'AAFont';
+    font-family: 'Saitamaar';
     /* 注意：路徑要指向根目錄的字體檔 */
     src: url('../Saitamaar.ttf') format('truetype'); 
 }
