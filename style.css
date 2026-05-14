@@ -1,11 +1,23 @@
+/* style.css */
 @font-face {
     font-family: 'AAFont';
-    src: url('Saitamaar.ttf') format('truetype');
+    /* 注意：路徑要指向根目錄的字體檔 */
+    src: url('../Saitamaar.ttf') format('truetype'); 
 }
 
-body, pre, div, p, span {
+body {
+    background-color: #f0f0f0; /* 仿舊式論壇底色 */
     font-family: 'AAFont', 'MS PGothic', sans-serif !important;
     white-space: pre !important;
     line-height: 1.1;
-    word-break: normal;
+    font-size: 16px;
 }
+
+/* 讓連結看起來像資料夾 */
+a {
+    display: block;
+    padding: 5px;
+    color: #0000EE;
+    text-decoration: none;
+}
+a:hover { text-decoration: underline; }
