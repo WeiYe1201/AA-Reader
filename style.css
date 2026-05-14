@@ -5,19 +5,13 @@
     src: url('../Saitamaar.ttf') format('truetype'); 
 }
 
-body {
-    background-color: #f0f0f0; /* 仿舊式論壇底色 */
-    font-family: 'AAFont', 'MS PGothic', sans-serif !important;
-    white-space: pre !important;
-    line-height: 1.1;
-    font-size: 16px;
+* {
+    font-family: 'AAFont', 'MS PGothic', 'ＭＳ Ｐゴシック', sans-serif !important;
 }
 
-/* 讓連結看起來像資料夾 */
-a {
-    display: block;
-    padding: 5px;
-    color: #0000EE;
-    text-decoration: none;
+body, pre, div, p, span {
+    white-space: pre !important;
+    line-height: 1.1 !important;
+    font-size: 16px !important;
+    word-wrap: normal !important;
 }
-a:hover { text-decoration: underline; }
