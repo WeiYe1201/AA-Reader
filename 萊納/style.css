@@ -1,11 +1,4 @@
 @font-face {
     font-family: 'AAFont';
-    src: url('Saitamaar.ttf') format('truetype');
-}
-
-body, pre, div, p, span {
-    font-family: 'AAFont', 'MS PGothic', sans-serif !important;
-    white-space: pre !important;
-    line-height: 1.1;
-    word-break: normal;
+    src: url('Saitamaar.ttf') format('truetype'); /* 這裡不用 ../ 因為它們在同一層 */
 }
