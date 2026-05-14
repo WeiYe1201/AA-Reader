@@ -1,4 +1,18 @@
 @font-face {
-    font-family: 'Saitamaar';
-    src: url('Saitamaar.ttf') format('truetype'); /* 這裡不用 ../ 因為它們在同一層 */
+    font-family: 'AAFont';
+    /* 這裡不需要 ../ 因為字體跟 CSS 都在最外面那層 */
+    /* 請確保檔名跟你的 .ttf 檔案一模一樣（注意大小寫） */
+    src: url('Saitamaar.ttf') format('truetype');
+}
+
+/* 暴力覆蓋所有標籤，確保 AA 不會跑掉 */
+* {
+    font-family: 'AAFont', 'MS PGothic', 'ＭＳ Ｐゴシック', sans-serif !important;
+}
+
+body, pre, div, p, span {
+    white-space: pre !important;
+    line-height: 1.1 !important;
+    font-size: 16px !important;
+    word-wrap: normal !important;
 }
